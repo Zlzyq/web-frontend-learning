@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 200px;
+            height: 200px;
+            border: 5px solid red;
+            padding: 10px;
+            margin: 20px;
+            background-color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box" id="box"></div>
+
+
+    <script>
+        var box = document.getElementById("box");
+        console.log(box.clientHeight);
+        console.log(box.clientWidth);
+
+        console.log(document.documentElement.clientHeight);
+        console.log(document.body.clientHeight);
+        
+        
+    </script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+
+        //null 就是 没有值  null是一个对象类型
+        //undefined 就是 没有定义  undefined是一个基本类型
+
+        // 1. 计算两个数的和
+        function sum(a, b) {
+            return a + b;
+        }
+
+        // 2. 计算两个数的差
+        function subtract(a, b) {
+            return a - b;
+        }
+
+        // 3. 计算两个数的积
+        function multiply(a, b) {
+            return a * b;
+        }
+
+        // 4. 计算两个数的商
+        function divide(a, b) {
+            if (b === 0) {
+                return "除数不能为零";
+            }
+            return a / b;
+        }
+
+        // 测试函数
+        console.log("5 + 3 =", sum(5, 3));
+        console.log("5 - 3 =", subtract(5, 3));
+        console.log("5 * 3 =", multiply(5, 3));
+        console.log("5 / 0 =", divide(5, 0));
+    </script>
+</body>
+
+</html>

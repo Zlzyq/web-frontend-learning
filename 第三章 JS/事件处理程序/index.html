@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <button onclick="click()">按钮</button>
+    <br>
+    <button id="btn">按钮按钮</button>
+
+    <script>
+        var btn = document.getElementById("btn");
+
+        btn.onclick = function () {
+            console.log("点击了按钮");
+        };
+
+        function click() {
+            console.log("点击了按钮");
+        }
+    </script>
+</body>
+
+</html>

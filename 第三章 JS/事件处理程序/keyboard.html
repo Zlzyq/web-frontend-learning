@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <input type="text" id="username">
+    //在这里获得 的话 让后加事件 是为了script和 html分开降低耦合
+    <script>
+        var username = document.getElementById("username");
+        username.onkeydown = function (e) {
+            console.log(e.target.value);
+
+        }
+    </script>
+
+</body>
+
+</html>

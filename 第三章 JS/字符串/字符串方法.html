@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var str1 = "Hello, World!";
+        var str2 = "JavaScript is awesome!";
+        var str3 = "I love programming.";
+        var result1 = str1.concat(str2); // 使用concat()方法连接字符串
+        var result2 = str1.concat(str2, str3); // 使用concat()方法连接多个字符串
+        console.log("连接后的字符串1:", result1);
+        console.log("连接后的字符串2:", result2);
+        var number1 = 10;
+        var number2 = 20;
+        var result3 = str3.concat(number1, number2);
+        //如果是别的链接数字 就不需要toSrting 会自动转化 
+        // 使用concat()方法连接数字
+        console.log("连接后的数字:", result3);
+        var result4 = str1 + str2; // 使用加号运算符连接字符串
+        //concat和+的区别concat 直接做加号 然后 + 如果是字符串的话就相加 然后 数字的话就做运算
+        console.log("使用加号运算符连接后的字符串:", result4);
+
+    </script>
+
+</body>
+
+</html>

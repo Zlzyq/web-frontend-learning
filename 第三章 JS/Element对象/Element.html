@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="box" id="root">Good</div>
+
+    <script>
+        var root = document.getElementById("root");
+        root.id = "roots";
+
+
+        console.log(root.className);
+        root.className = "box!box@box#"
+        //如果 有两个class属性的话 那么 会同时读取两个的效果
+        console.log(root.className);
+
+
+    </script>
+
+</body>
+
+</html>

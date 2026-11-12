@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event 事件对象完整学习</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+    background: #f5f7fa;
+    color: #333;
+    margin: 0;
+    padding: 24px;
+    line-height: 1.6;
+  }
+  h1 { font-size: 22px; margin: 0 0 20px; }
+  section {
+    background: #fff;
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08);
+  }
+  h2 { font-size: 16px; margin: 0 0 12px; color: #1a73e8; }
+  p.tip { font-size: 13px; color: #888; margin: 6px 0 12px; }
+  button {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: 1px solid #1a73e8;
+    background: #1a73e8;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  button.ghost { background: #fff; color: #1a73e8; }
+  button:hover { opacity: .9; }
+  input[type="text"] {
+    padding: 8px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+  }
+  input[type="text"]:focus { border-color: #1a73e8; }
+  label { font-size: 14px; user-select: none; cursor: pointer; }
+  .bubble-outer {
+    background: #fdecea;
+    border: 2px dashed #e57373;
+    padding: 26px;
+    border-radius: 8px;
+    margin-top: 10px;
+  }
+  .bubble-middle {
+    background: #fff3e0;
+    border: 2px dashed #ffb74d;
+    padding: 26px;
+    border-radius: 8px;
+  }
+  .bubble-inner {
+    background: #e8f5e9;
+    border: 2px dashed #81c784;
+    padding: 16px;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+  }
+  ul#todo-list { list-style: none; padding: 0; margin: 10px 0 0; }
+  ul#todo-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f7f9fc;
+    border: 1px solid #e3e8ef;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+  }
+  ul#todo-list button {
+    background: #ef5350;
+    border-color: #ef5350;
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+  a#demo-link { color: #1a73e8; }
+  #console-out {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    font-family: Consolas, Monaco, monospace;
+    font-size: 13px;
+    height: 220px;
+    overflow-y: auto;
+    padding: 12px;
+    border-radius: 8px;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+  #console-out .line { padding: 2px 0; border-bottom: 1px solid #2a2a2a; }
+  .log-time { color: #6a9955; }
+</style>
+</head>
+<body>
+
+<h1>Event 事件对象完整学习示例</h1>
+<p class="tip">打开浏览器控制台（F12）也能同步看到输出。下面每个区块都对应 event 对象的一组常用能力。</p>
+
+<!-- ========== 0. 输出面板 ========== -->
+<section>
+  <h2>📋 事件输出面板</h2>
+  <div id="console-out"></div>
+</section>
+
+<!-- ========== 1. 通用属性速查 ========== -->
+<section>
+  <h2>1️⃣ 点一下，查看 event 对象的通用属性</h2>
+  <p class="tip">演示 e.type、e.target、e.currentTarget、e.eventPhase、e.timeStamp、坐标、e.button 等。</p>
+  <button id="inspect-btn">点我查看 event</button>
+</section>
+
+<!-- ========== 2. 鼠标事件 ========== -->
+<section>
+  <h2>2️⃣ 鼠标事件：坐标类属性</h2>
+  <p class="tip">移动或点击下方区域，观察 clientX/Y、pageX/Y、offsetX/Y 的差异。</p>
+  <div id="mouse-area" style="height:120px;background:#eef4ff;border:1px dashed #1a73e8;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#1a73e8;user-select:none;">
+    鼠标在这里移动 / 点击 / 双击 / 右键
+  </div>
+</section>
+
+<!-- ========== 3. 键盘事件 ========== -->
+<section>
+  <h2>3️⃣ 键盘事件：key / code / 修饰键</h2>
+  <p class="tip">先点一下输入框让它获得焦点，然后按键。</p>
+  <input type="text" id="key-input" placeholder="在这里按键，试试 a、Enter、Ctrl+C、Shift+1">
+</section>
+
+<!-- ========== 4. 冒泡与 stopPropagation ========== -->
+<section>
+  <h2>4️⃣ 事件冒泡 与 stopPropagation()</h2>
+  <p class="tip">点击最内层绿色区域，观察事件从内向外依次触发。</p>
+  <label>
+    <input type="checkbox" id="stop-prop"> 内层调用 <code>e.stopPropagation()</code>（阻止继续冒泡）
+  </label>
+
+  <div class="bubble-outer" id="bubble-outer">
+    外层 outer
+    <div class="bubble-middle" id="bubble-middle">
+      中层 middle
+      <div class="bubble-inner" id="bubble-inner">内层 inner（点我）</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 5. preventDefault ========== -->
+<section>
+  <h2>5️⃣ preventDefault()：阻止默认行为</h2>
+  <p class="tip">链接默认会跳转；表单默认会刷新页面。这里都拦住了。</p>
+  <p>
+    <a href="https://example.com" id="demo-link">点我（默认会跳转到 example.com）</a>
+  </p>
+  <form id="my-form" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+    <input type="text" id="name-input" placeholder="输入名字，按回车提交">
+    <button type="submit">提交表单</button>
+  </form>
+</section>
+
+<!-- ========== 6. 事件委托 ========== -->
+<section>
+  <h2>6️⃣ 事件委托（只给父元素绑一个监听）</h2>
+  <p class="tip">整个列表只绑定了 1 个 click 监听，却能处理所有子项，靠的就是 e.target。</p>
+  <ul id="todo-list">
+    <li data-id="1">买牛奶 <button class="del">删除</button></li>
+    <li data-id="2">写代码 <button class="del">删除</button></li>
+    <li data-id="3">去跑步 <button class="del">删除</button></li>
+  </ul>
+</section>
+
+<script>
+/* =========================================================
+   工具函数：把信息输出到页面面板 + 控制台
+   ========================================================= */
+const outBox = document.getElementById('console-out');
+
+function log(msg) {
+  const time = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+  const line = document.createElement('div');
+  line.className = 'line';
+  line.innerHTML = `<span class="log-time">[${time}]</span> ${msg}`;
+  outBox.appendChild(line);
+  outBox.scrollTop = outBox.scrollHeight;
+
+  console.log(msg);
+}
+
+/* =========================================================
+   1. 通用属性速查
+   ========================================================= */
+document.getElementById('inspect-btn').addEventListener('click', function (e) {
+  // 注意：普通函数里 this === e.currentTarget
+  const rows = [
+    ['e.type', e.type],
+    ['e.target.tagName', e.target.tagName],
+    ['e.currentTarget === this', e.currentTarget === this],
+    ['e.eventPhase', `${e.eventPhase}（1捕获 2目标 3冒泡）`],
+    ['e.bubbles', e.bubbles],
+    ['e.cancelable', e.cancelable],
+    ['e.defaultPrevented', e.defaultPrevented],
+    ['e.timeStamp', e.timeStamp.toFixed(2) + ' ms（相对页面加载）'],
+    ['e.clientX / clientY', `${e.clientX} / ${e.clientY}`],
+    ['e.pageX / pageY', `${e.pageX} / ${e.pageY}`],
+    ['e.button', `${e.button}（0左 1中 2右）`],
+    ['e.isTrusted', e.isTrusted]
+  ];
+
+  log('====== 点击按钮，event 对象属性如下 ======');
+  rows.forEach(([k, v]) => log(`  ${k} = ${v}`));
+  log('===========================================');
+});
+
+/* =========================================================
+   2. 鼠标事件
+   ========================================================= */
+const mouseArea = document.getElementById('mouse-area');
+
+mouseArea.addEventListener('mousemove', function (e) {
+  // 这里用 textContent 直接显示，不往日志里刷屏
+  mouseArea.textContent =
+    `client(${e.clientX}, ${e.clientY})  ` +
+    `page(${e.pageX}, ${e.pageY})  ` +
+    `offset(${e.offsetX}, ${e.offsetY})`;
+});
+
+mouseArea.addEventListener('click', function (e) {
+  log(`【click】clientX=${e.clientX}, clientY=${e.clientY}, button=${e.button}`);
+});
+
+mouseArea.addEventListener('dblclick', function (e) {
+  log(`【dblclick】双击了，target=${e.target.tagName}`);
+});
+
+mouseArea.addEventListener('contextmenu', function (e) {
+  e.preventDefault(); // 阻止浏览器右键菜单
+  log(`【contextmenu】右键被 preventDefault 拦截，button=${e.button}`);
+});
+
+/* =========================================================
+   3. 键盘事件
+   ========================================================= */
+document.getElementById('key-input').addEventListener('keydown', function (e) {
+  log(
+    `【keydown】key=${JSON.stringify(e.key)}  code=${e.code}  ` +
+    `ctrl=${e.ctrlKey} shift=${e.shiftKey} alt=${e.altKey} meta=${e.metaKey}`
+  );
+
+  if (e.key === 'Enter') {
+    log('  → 你按下了回车键');
+  }
+});
+
+/* =========================================================
+   4. 冒泡 + stopPropagation
+   ========================================================= */
+const stopPropCheckbox = document.getElementById('stop-prop');
+
+['bubble-inner', 'bubble-middle', 'bubble-outer'].forEach(function (id) {
+  document.getElementById(id).addEventListener('click', function (e) {
+    log(`【冒泡】${id} 收到 click | target=${e.target.id} | currentTarget=${e.currentTarget.id}`);
+
+    // 只在内层处理时，根据复选框决定是否阻止冒泡
+    if (id === 'bubble-inner' && stopPropCheckbox.checked) {
+      e.stopPropagation();
+      log('  → 已调用 stopPropagation()，事件不再向上冒泡到 middle / outer');
+    }
+  });
+});
+
+/* =========================================================
+   5. preventDefault
+   ========================================================= */
+// 5.1 阻止链接跳转
+document.getElementById('demo-link').addEventListener('click', function (e) {
+  e.preventDefault();
+  log('【preventDefault】链接的默认跳转被阻止了，页面没有离开');
+});
+
+// 5.2 input 事件：每次输入都会触发
+const nameInput = document.getElementById('name-input');
+nameInput.addEventListener('input', function (e) {
+  log(`【input】当前 value = "${e.target.value}"`);
+});
+
+// 5.3 表单提交：阻止刷新
+document.getElementById('my-form').addEventListener('submit', function (e) {
+  e.preventDefault(); // 不加这句，页面会刷新
+  log(`【submit】已阻止默认提交，提交的名字是："${nameInput.value}"`);
+});
+
+/* =========================================================
+   6. 事件委托
+   ========================================================= */
+document.getElementById('todo-list').addEventListener('click', function (e) {
+  // e.target 永远是真正被点到的那个元素
+  if (e.target.classList.contains('del')) {
+    const li = e.target.parentElement;
+    log(`【委托】点击了"删除"，要删除的是：${li.textContent.replace('删除', '').trim()}`);
+    li.remove();
+  } else {
+    log(`【委托】点击了列表项，target=${e.target.tagName}，currentTarget=${e.currentTarget.tagName}`);
+  }
+});
+
+/* 初始提示 */
+log('页面已就绪，开始点击上面的按钮试试吧～');
+</script>
+</body>
+</html>
