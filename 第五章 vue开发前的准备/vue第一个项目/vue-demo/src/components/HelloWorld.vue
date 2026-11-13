@@ -9,6 +9,8 @@
     <h3>vue模板语法</h3>
     <br>
     <br>
+    <br>
+
     <input type="text" v-model.lazy="username">
     <p>{{ username }}</p>
     <p>{{ message }}</p>
@@ -37,7 +39,7 @@ export default {
       },
       //{{}}完全是可以写在 两个标签的中间 儿v-bind 也就是: 写在标签的里面 而且 
       //父类组件往子类组件传递的时候 刚好只能写在 孩子里面
-      username:"",
+      username: "",
       //事件
       counter: 1,
       //列表渲染
