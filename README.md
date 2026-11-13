@@ -7,14 +7,16 @@
 - **第一章 HTML**：HTML 基础标签与页面结构练习
 - **第二章 CSS**：CSS 基础样式、盒模型、布局等练习
 - **第三章 JS**：JavaScript 基础语法、DOM 操作、事件等
-- **第四章 ES6新特性/Class**：ES6+ 语法（Promise、箭头函数、Class 等）学习记录
+- **第四章 ES6新特性/Class**：ES6+ 语法（Promise、箭头函数、Class、Module 等）学习记录
+- **第五章 vue开发前的准备**：Vue 环境搭建与第一个脚手架项目（vue-demo）
 
 ## 🚀 学习进度
 
 - [x] 第一章 HTML
 - [x] 第二章 CSS
 - [x] 第三章 JS 基础
-- [ ] 第四章 ES6 新特性（进行中）
+- [x] 第四章 ES6 新特性
+- [ ] 第五章 Vue 开发前的准备（进行中）
 - [ ] 后续：框架学习（Vue/React 等）
 
 ## 💡 学习目标

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        class Person {
+            //静态方法
+            static sayHellow() {
+                console.log("hello");
+
+            }
+
+            constructor(name, age) {
+                this.name = name;
+                this.age = age;
+            }
+            //实例方法
+            say() {
+                console.log("hello");
+
+            }
+        }
+        class Student extends Person {
+
+        }
+        var s = new Student("小明", 20)
+        s.say();
+        // var p = new Person("zhangsan", 20);
+        // console.log(p.name);
+        // p.say();
+        // Person.sayHellow();
+
+    </script>
+
+</body>
+
+</html>
